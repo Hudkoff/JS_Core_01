@@ -1,43 +1,14 @@
-﻿
+﻿window.onload = function() {
 
-
-
-
-
-
-
-window.onload = function() {
+	// some cool stuff
+	var docFragment = document.createDocumentFragment();
+	var dateArray = [];
+	var lenght = 10;
+	var table = document.querySelector('.dateTable');
 
 	/**
-	* Cool randomizer for different usage
+	* Elegant way to create multilanguage variables
 	*/
-	function randomizer(minValue, maxValue) {
-		var rand = minValue + Math.random()*(maxValue - minValue + 1); // Math.random() gives number from interval [0,1) so we need to increase value 
-		rand = Math.floor(rand); 
-		//rand = rand^0; // some another stylish way to round
-		return rand;
-	}
-
-	/**
-	* Let's check my awesome randomizer
-	*/
-	function probabilityControl(iterations) {
-		var x = y = 0;
-		for (var i = 0; i < iterations; i++) {
-			(randomizer(1, 2) == 1) ? x++ : y++;
-		}
-		x = x*100/iterations;
-		y = y*100/iterations;
-		dx = Math.round(Math.abs(x - 50)*100)/100; // let's round it to 0.01
-		console.log(x + "% vs. " + y + "%");
-		if (dx >= 1) {
-			console.error("Shit! dx=" + dx + "%");
-		} else {
-			console.warn("Fucking dx=" + dx + "%");
-		}
-	}
-	probabilityControl(2000);
-
 	var weekDayRus = [];
 	weekDayRus[0]="Вс";
 	weekDayRus[1]="Пн";
@@ -61,13 +32,41 @@ window.onload = function() {
 	monthRus[10] = "Ноябрь";
 	monthRus[11] = "Декабрь";
 
+	/**
+	* Awesome randomizer for different usage
+	*/
+	function randomizer(minValue, maxValue) {
+		var rand = minValue + Math.random()*(maxValue - minValue + 1); // Math.random() gives number from interval [0,1) so we need to increase value 
+		rand = Math.floor(rand); 
+		//rand = rand^0; // some another stylish way to round
+		return rand;
+	}
 
 	/**
-	 * converts image name to image tag
-	 * @param imgFilename {string}	imgFilename  single image name from array
-	 * @param className {string}	class that applies to image
-	 *
-	 * @returns {HTMLElement}		full <img> tag
+	* Let's check my awesome randomizer
+	* @param iterations {number}    how many random numbers create
+	*/
+	function probabilityControl(iterations) {
+		var x = y = 0;
+		for (var i = 0; i < iterations; i++) {
+			(randomizer(1, 2) == 1) ? x++ : y++;
+		}
+		x = x*100/iterations;
+		y = y*100/iterations;
+		dx = Math.round(Math.abs(x - 50)*100)/100; // let's round it to 0.01
+		console.log(x + "% vs. " + y + "%");
+		if (dx >= 1) {
+			console.error("Shit! dx=" + dx + "%");
+		} else {
+			console.warn("Fucking dx=" + dx + "%");
+		}
+	}
+	probabilityControl(2000);
+
+	/**
+	 * creates my super nodes
+	 * @param inputDate {string}	date object
+	 * @returns {HTMLElement}		<div class="dateRow" data-item="Sun Dec 08 2013 00:00:00 GMT+0300 (Калининградское время (зима))">Вс. 08, Декабрь 2013, до НГ - [24]</div>
 	 */
 	function createDateNode(inputDate) {
 		var newDiv = document.createElement('div');
@@ -91,13 +90,9 @@ window.onload = function() {
 		return newDiv;
 	}
 
-
-	var docFragment = document.createDocumentFragment();
-	var dateArray = [];
-	var lenght = 10;
-	var table = document.querySelector('.dateTable');
-
-
+	/**
+	 * Fill table with array data && crate array if it is not exist
+	 */
 	function fillTable() {
 		var node;
 		for (var i = 0; i < lenght; i++) {
@@ -113,10 +108,12 @@ window.onload = function() {
 		table.innerHTML = "";
 		table.appendChild(docFragment); // twice .appendChild() ? hmm... ok!
 	}
-	fillTable();
+	fillTable(); // onload call
+
+	// I'm tired to comment, so guess by youself what's below :)
 
 	document.querySelector('.sort-month').addEventListener('click', function(e) {
-		function sName(i, ii) {
+		function sortFun(i, ii) {
 			if (i.getMonth() > ii.getMonth()) {
 				return 1;				
 			} else if (i.getMonth() < ii.getMonth()) {
@@ -125,13 +122,13 @@ window.onload = function() {
 				return 0;
 			}
 		}
-		dateArray.sort(sName);
+		dateArray.sort(sortFun);
 		fillTable();
 		e.preventDefault();
 	});
 
 	document.querySelector('.sort-weekday').addEventListener('click', function(e) {
-		function sName(i, ii) {
+		function sortFun(i, ii) {
 			if (i.getDay() > ii.getDay()) {
 				return 1;				
 			} else if (i.getDay() < ii.getDay()) {
@@ -140,13 +137,13 @@ window.onload = function() {
 				return 0;
 			}
 		}
-		dateArray.sort(sName);
+		dateArray.sort(sortFun);
 		fillTable();
 		e.preventDefault();
 	});
 
 	document.querySelector('.sort-beforeNYday').addEventListener('click', function(e) {
-		function sName(i, ii) {
+		function sortFun(i, ii) {
 			if (Math.round( (1388534400000 - i.getTime())/86400000 ) > Math.round( (1388534400000 - ii.getTime())/86400000 )) {
 				return 1;				
 			} else if (Math.round( (1388534400000 - i.getTime())/86400000 ) < Math.round( (1388534400000 - ii.getTime())/86400000 )) {
@@ -155,7 +152,7 @@ window.onload = function() {
 				return 0;
 			}
 		}
-		dateArray.sort(sName);
+		dateArray.sort(sortFun);
 		fillTable();
 		e.preventDefault();
 	});
