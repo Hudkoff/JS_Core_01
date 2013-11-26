@@ -1,0 +1,28 @@
+body {
+	font: 13pt Verdana;
+	color: #4f4f4f;
+	text-align: center;
+}
+a{
+	background: #ccc;
+	border-radius: 3px;
+	text-decoration: none;
+	padding: 8px 10px 10px;
+	color:#fff;
+}
+a:hover{
+	background: #ddd;
+	text-decoration: none;
+}
+.dateTable {
+	margin: 100px auto;
+	width: 500px;
+	border: 5px solid #f4f4f4;
+}
+.dateRow {
+	padding: 5px 10px;
+}
+.dateRow:nth-child(even) {
+	background: #efefef;
+
+}
